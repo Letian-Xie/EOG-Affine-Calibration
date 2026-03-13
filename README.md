@@ -75,4 +75,4 @@ This project is released under the MIT License. See the LICENSE file for details
 
 ## Acknowledgements
 
-This project was completed as part of a research project under the supervision of Associate Progfessor [Sam John] at the University of Melbourne.
+This project was completed as part of a research project under the supervision of Associate Progfessor Sam John at the University of Melbourne.
