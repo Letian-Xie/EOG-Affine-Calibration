@@ -25,7 +25,7 @@ for subj = 1:num_subjects
 
     fprintf('\nProcessing Subject %d...\n', subj);
 
-    % -------- Load subject data for 10 subjects --------
+     % -------- Load subject data for 10 subjects --------
     % The dataset used in this project is provided by the University of Malta.
     % It is not included in this repository.
     %
@@ -34,7 +34,7 @@ for subj = 1:num_subjects
     % the dataset on your local machine.
     
     folder = sprintf('PATH_TO_DATASET/S%d', subj);
-
+    
     load(fullfile(folder,'EOG.mat'));
     load(fullfile(folder,'ControlSignal.mat'));
     load(fullfile(folder,'Target_GA_stream.mat'));
@@ -138,22 +138,23 @@ for subj = 1:num_subjects
         % Reconstruct trajectory
         % ---- Standard affine reconstruction
         traj_std = zeros(length(h),2);
-        traj_disp = zeros(length(h),2);
 
         for i = 1:length(h)
             % Standard affine
             traj_std(i,:)  = (A_std \ ([h(i); v(i)] - c_std))';
 
-            % Displacement affine
-            traj_disp(i,:) = (A_disp \ [h(i); v(i)])';
         end
 
         % Displacements
         dx_std  = traj_std(end,1)  - traj_std(1,1);
         dy_std  = traj_std(end,2)  - traj_std(1,2);
 
-        dx_disp = traj_disp(end,1) - traj_disp(1,1);
-        dy_disp = traj_disp(end,2) - traj_disp(1,2);
+        dh = h(end) - h(1); 
+        dv = v(end) - v(1); 
+        dGA = A_disp \ [dh; dv]; 
+        % A_delta is displacement-calibrated matrix 
+        dx_disp = dGA(1); 
+        dy_disp = dGA(2);
 
         dx_true = GAx(end) - GAx(1);
         dy_true = GAy(end) - GAy(1);
@@ -187,19 +188,20 @@ plot(subjects, mean_disp*100, '-s', 'LineWidth', 2);
 
 xlabel('Subject');
 ylabel('Mean classification accuracy (%)');
-title('Trajectory affine vs displacement affine calibration');
-legend('Trajectory affine (A + c)', 'Displacement affine', 'Location','best');
+title('Standard affine vs displacement affine calibration');
+legend('Standard affine (A + c)', 'Displacement affine', 'Location','best');
 grid on;
 
 figure(2);
-plot(subjects, acc_card_std*100, '-s', 'LineWidth', 2);hold on 
-plot(subjects, acc_quad_std*100, '-s', 'LineWidth', 2);
-plot(subjects, acc_8_std*100, '-s', 'LineWidth', 2);
-plot(subjects, acc_card_disp*100, '-s', 'LineWidth', 2);
+% plot(subjects, acc_card_std*100, '-s', 'LineWidth', 2);hold on 
+% plot(subjects, acc_quad_std*100, '-s', 'LineWidth', 2);
+% plot(subjects, acc_8_std*100, '-s', 'LineWidth', 2);
+plot(subjects, acc_card_disp*100, '-s', 'LineWidth', 2);hold on
 plot(subjects, acc_quad_disp*100, '-s', 'LineWidth', 2);
 plot(subjects, acc_8_disp*100, '-s', 'LineWidth', 2);
 xlabel('Subject');
 ylabel('Classification accuracy (%)');
 title('Standard affine vs displacement affine calibration');
-legend('Std skewed', 'Std 4-quadrant', 'Std 8-class','Disp skewed', 'Disp 4-quadrant', 'Disp 8-class');
+% legend('Std skewed', 'Std 4-quadrant', 'Std 8-class','Disp skewed', 'Disp 4-quadrant', 'Disp 8-class');
+legend('Disp skewed', 'Disp 4-quadrant', 'Disp 8-class');
 grid on;
