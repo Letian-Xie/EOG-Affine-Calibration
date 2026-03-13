@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/1174072621.svg)](https://doi.org/10.5281/zenodo.18994963)
 # EOG-Affine-Calibration
 EOG-based gaze direction classification using trajectory and displacement-based affine calibration. 
 
@@ -66,11 +67,11 @@ Biomedical Engineering
 
 ## Citation
 
-If you use this code or build upon this method, please cite:
+If you use this code, please cite:
 
-Xie, L. (2026).  
-EOG-Based Gaze Direction Classification Using Affine Calibration.  
-GitHub Repository.
+Xie, L. (2026).
+EOG-Based Gaze Direction Classification Using Affine Calibration.
+Zenodo. DOI: 10.5281/zenodo.18994964
 
 Available at:
 https://github.com/SterneSehen/EOG-Affine-Calibration
